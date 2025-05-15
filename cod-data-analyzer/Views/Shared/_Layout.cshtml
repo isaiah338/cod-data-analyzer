@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - cod_data_analyzer</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/cod_data_analyzer.styles.css" asp-append-version="true" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body class="bg-dark">
+    <header>
+        @* nav: https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_navbar_collapse&stacked=h  *@
+        <nav class="navbar navbar-expand-sm navbar-light bg-light border-bottom shadow-sm mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand text-dark" href="#">Data Analyzer</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                        <li class="nav-item px-4">
+                            <a class="nav-link text-dark active" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item px-4">
+                            <a class="nav-link text-dark" asp-controller="Analyzer" asp-action="Index">Analyzer</a>
+                        </li>
+
+                        @* @if (User.IsInRole("Administrator")) *@
+                        @* { *@
+                            <li class="nav-item dropdown px-4">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index">Home</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Maps">Maps</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Modes">Modes</a></li>
+                                </ul>
+                            </li>
+                        @* } *@
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto mb-2 mb-sm-0">
+                        <li class="nav-item px-4">
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="@(User.Identity.IsAuthenticated ? "Index" : "Create")">
+                                <i class="bi bi-person"></i> @(User.Identity.IsAuthenticated ? "Profile" : "Sign Up")
+                            </a>
+                        </li>
+                        <li class="nav-item px-4">
+                            @{
+                                var action = User.Identity.IsAuthenticated ? "Logout" : "Login";
+                            }
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="@action">
+                                <i class="bi bi-box-arrow-in-right"></i> @action
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container d-flex min-vh-100 min-vw-90">
+        <main role="main" class="container flex-grow-1 text-light">
+            <h1>@ViewData["Title"]</h1>
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer text-muted">
+        <div class="container">
+            &copy; 2025 - cod_data_analyzer - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

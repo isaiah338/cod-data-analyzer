@@ -1,0 +1,208 @@
+﻿@model cod_data_analyzer.ViewModels.AdminModesViewModel
+@{
+    ViewData["Title"] = "Maps";
+}
+<div class="container-fluid text-dark">
+    <div id="" class="bg-light d-flex flex-column flex-nowrap mb-5">
+        <h2 class="ps-4 mb-4 border-bottom">New Game Mode</h2>
+        <div id="adminModesNewForm" class="row mb-3 ps-5">
+            <div class="form-group d-flex col-12 gap-2 ps-2">
+                <label for="gamemodeTitleNew" class="col-auto">Map Mode:</label>
+
+                <select id="gamemodeTitleNew">
+                    @foreach (var mode in Model.GameTitles)
+                    {
+                        <option value="@mode.GameTitleId">@mode.GameTitleName</option>
+                    }
+                </select>
+
+            </div>
+            <div class="form-group d-flex col-12 gap-2 ps-2">
+                <label for="gamemodeTypeNew" class="col-auto">Map Mode:</label>
+                <select id="gameModeTypeNew">
+                    @foreach(var mode in Model.GameTypes)
+                    {
+                        <option value="@mode.GameTypeId">@mode.GameTypeName</option>
+                    }
+                </select>
+
+
+                <i class="bi bi-upload uploadIcon btn border-secondary col-auto offset-1"></i>
+            </div>
+        </div>
+        <div id="adminModeUpdateForm" class="bg-light container-md">
+            <h2 class="ps-2 mb-4 border-bottom pt-4">Edit Game Mode</h2>
+            <div id="modeEditContainer" class="row mb-3 ps-4">
+                <div class="row d-flex col-12 gap-2 ps-3">
+                    <dl class="col-12">
+                        <dt>Game Mode Title:</dt>
+                        <dd id="gameModeTitleEditOut"></dd>
+                        <dt>Game Mode Type:</dt>
+                        <dd id="gameModeTypeEditOut"></dd>
+                    </dl>
+
+                    <label for="gameModeDescriptionUpdate" class="col-auto">Game Mode Description:</label>
+                    <input type="text" value="" name="gameModeDescriptionUpdate" id="gameModeDescriptionUpdate" class="small col-4" disabled />
+                    <i class="bi bi-pencil-square editIcon btn border-secondary col-auto offset-1"></i>
+                    <div class="editIconsContainer d-none col-6">
+                        <i class="bi bi-floppy saveIcon px-3  text-success btn border-secondary col-auto offset-1"></i>
+                        <i class="bi bi-trash3 px-3 deleteIcon text-danger btn border-secondary col-auto offset-1"></i>
+                        <i class="bi bi-x-circle cancelIcon px-3 text-warning btn border-secondary col-auto offset-1"></i>
+                    </div>
+                    <input type="hidden" name="gameModeId" id="gameModeId" value="0">
+                    <input id="gameModeUpdateTitleId" type="hidden" value="0" />
+                    <input id="gameModeUpdateTypeId" type="hidden" value="0" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row  mb-5">
+        <h2 class="ps-2 text-muted">Game Modes</h2>
+        <div class="vh-50 container-sm" style="overflow: scroll;">
+            <table class="table small text-light">
+                <thead>
+                    <tr>
+                        <th class="px-2"></th>
+                        <th class="px-2">Game Title</th>
+                        <th class="px-2">Game Type</th>
+                        <th class="px-2">Description</th>
+                        <th class="px-2"></th>
+                    </tr>
+                </thead>
+                <tbody id="gamemodeTableBody">
+                    @foreach (var mode in @Model.GameModes)
+                    {
+                        <tr class="gameModeTableRow">
+                            <td class="px-2">@mode.GameModeId</td>
+                            <td class="px-2">@mode.GameTitle.GameTitleName</td>
+                            <td class="px-2">@mode.GameType.GameTypeName</td>
+                            <td class="px-2">@mode.GameModeDescription</td>
+                            <td class="d-none">@mode.GameTitle.GameTitleId</td>
+                            <td class="d-none">@mode.GameType.GameTypeId</td>
+                            <td><button type="button" class="btn btn-outline-info titleRowEdit">edit</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="row  mb-5">
+        <div id="adminModeTypeNewForm" class="bg-light container-md">
+            <h2 class="ps-4 mb-4 border-bottom">New Game Type</h2>
+            <div id="modeTypeNewContainer" class="row mb-3 ps-5">
+                <div class="form-group d-flex col-12 gap-2 ps-2">
+                    <label for="modeTypeNewName" class="col-auto">Mode Type Name:</label>
+                    <input type="text" value="" name="modeTypeNewName" id="modeTypeNewName" class="small col-4" required />
+                    <i class="bi bi-upload uploadIcon btn border-secondary col-auto offset-1"></i>
+                </div>
+            </div>
+        </div>
+        <div id="adminModeTypeUpdateForm" class="bg-light container-md">
+            <h2 class="ps-2 mb-4 border-bottom pt-4">Edit Game Mode Types</h2>
+            <div id="modeTypeEditContainer" class="row mb-3 ps-4">
+                <div class="form-group d-flex col-12 gap-2 ps-3">
+                    <label for="modeTypeUpdate" class="col-auto">Map Name:</label>
+                    <input type="text" value="" name="modeTypeUpdate" id="modeTypeUpdate" class="small col-4" disabled />
+                    <i class="bi bi-pencil-square editIcon btn border-secondary col-auto offset-1"></i>
+                    <div class="editIconsContainer d-none col-6">
+                        <i class="bi bi-floppy saveIcon px-3  text-success btn border-secondary col-auto offset-1"></i>
+                        <i class="bi bi-trash3 px-3 deleteIcon text-danger btn border-secondary col-auto offset-1"></i>
+                        <i class="bi bi-x-circle cancelIcon px-3 text-warning btn border-secondary col-auto offset-1"></i>
+                    </div>
+                    <input type="hidden" name="modeTypeId" id="modeTypeId" value="0">
+                </div>
+            </div>
+        </div>
+        <h2 class="ps-2 text-muted">Game Types</h2>
+        <div class="vh-50 container-sm" style="overflow: scroll;">
+            <table class="table small text-light">
+                <thead>
+                    <tr>
+                        <th class="px-2"></th>
+                        <th class="px-2">Game Types</th>
+                        <th class="px-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var type in @Model.GameTypes)
+                    {
+                        <tr class="typeTableRow">
+                            <td class="px-2">@type.GameTypeId</td>
+                            <td class="px-2">@type.GameTypeName</td>
+                            <td><button type="button" class="btn btn-outline-info">edit</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row  mb-5">
+        <div id="adminModeTypeNewForm" class="bg-light container-md">
+            <h2 class="ps-4 mb-4 border-bottom">New Game Title</h2>
+            <div id="modeTitleNewContainer" class="row mb-3 ps-5">
+                <div class="form-group d-flex col-12 gap-2 ps-2">
+                    <label for="modeTitleNewTitle" class="col-auto">Mode Title Name:</label>
+                    <input type="text" value="" name="modeTitleNewTitle" id="modeTitleNewTitle" class="small col-4" required />
+                    <i class="bi bi-upload uploadIcon btn border-secondary col-auto offset-1"></i>
+                </div>
+            </div>
+            <div id="modeTitleNewContainer" class="row mb-3 ps-5">
+                <div class="form-group d-flex col-12 gap-2 ps-2">
+                    <label for="modeTitleNewCode" class="col-auto">Mode Title Code:</label>
+                    <input type="text" value="" name="modeTitleNewCode" id="modeTitleNewCode" class="small col-4" required />
+                </div>
+            </div>
+        </div>
+        <div id="adminModeTitleUpdateForm" class="bg-light container-md">
+            <h2 class="ps-2 mb-4 border-bottom pt-4">Edit Game Mode Types</h2>
+            <div id="modeTitleEditContainer" class="row mb-3 mapEditContainer ps-4">
+                <div class="row col-12 gap-2 ps-3">
+                    <div class="col-12">
+                        <label for="modeTitleUpdateName" class="col-auto">Map Name:</label>
+                        <input type="text" value="" name="modeTitleUpdateName" id="modeTitleUpdateName" class="small col-4" disabled />
+                    </div>
+                    <div class="col-12">
+                        <label for="modeTitleUpdateCode" class="col-auto">Map Name:</label>
+                        <input type="text" value="" name="modeTitleUpdateCode" id="modeTitleUpdateCode" class="small col-4" disabled />
+                    </div>
+                    <i class="bi bi-pencil-square editIcon btn border-secondary col-auto offset-1"></i>
+                    <div class="editIconsContainer d-none col-6">
+                        <i class="bi bi-floppy saveIcon px-3  text-success btn border-secondary col-auto offset-1"></i>
+                        <i class="bi bi-trash3 px-3 deleteIcon text-danger btn border-secondary col-auto offset-1"></i>
+                        <i class="bi bi-x-circle cancelIcon px-3 text-warning btn border-secondary col-auto offset-1"></i>
+                    </div>
+                    <input type="hidden" name="modeTitleId" id="modeTitleId" value="0">
+                </div>
+            </div>
+        </div>
+        <h2 class="ps-2 text-muted">Game Titles</h2>
+        <div class="vh-50 container-sm" style="overflow: scroll;">
+            <table class="table small text-light">
+                <thead>
+                    <tr class="titleTableRow">
+                        <th class="px-2">ID</th>
+                        <th class="px-2">Code</th>
+                        <th class="px-2">Game Titles</th>
+                        <th class="px-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var mode in @Model.GameTitles)
+                    {
+                        <tr class="titleTableRow">
+                            <td class="px-2">@mode.GameTitleId</td>
+                            <td class="px-2">@mode.GameTitleCode</td>
+                            <td class="px-2">@mode.GameTitleName</td>
+                            <td><button type="button" class="btn btn-outline-info titleRowEdit">edit</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="~/js/adminModes.js"></script>
+</div>

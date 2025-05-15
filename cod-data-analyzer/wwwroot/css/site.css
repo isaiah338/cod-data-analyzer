@@ -1,0 +1,55 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.vh-25{max-height: 25vh;}
+.vh-50{max-height: 50vh;}
+.vh-75{max-height: 75vh;}
+.vh-100{max-height: 100vh;}
+
+.chart-container img {
+    height: 75%;
+    /* width: 75%; */
+}
+
+.overflow-x-scroll {
+    overflow-x: scroll;
+}
+
+.overflow-y-scroll {
+    overflow-y: scroll;
+}
+
+.overflow-scroll {
+    overflow: scroll;
+}
+
+.calculatedStatContainer > p {
+    background-color: lightgray;
+    border: solid black 0.05em;
+    margin-top: 1.5em;
+    padding: 0.5em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hover-bg-dark:hover {background-color: var(--bg-dark);}

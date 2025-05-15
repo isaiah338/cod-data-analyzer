@@ -1,0 +1,117 @@
+﻿@model cod_data_analyzer.ViewModels.AdminMapsViewModel
+@{
+    ViewData["Title"] = "Maps";
+}
+<div class="container-fluid text-dark">
+    <div id="" class="bg-light d-flex flex-column flex-nowrap">
+        <!-- new map  -->
+        <h2 class="ps-4 mb-4 border-bottom">New Map</h2>
+        <div id="adminMapNewForm" class="row mb-3 ps-5">
+            <div class="form-group d-flex col-12 gap-2 ps-2">
+                <label for="mapNameNew" class="col-auto">Map Name:</label>
+                <input type="text" value="" name="mapNameNew" id="mapNameNew" class="small col-4" required />
+                <i class="bi bi-upload uploadIcon btn border-secondary col-auto offset-1"></i>
+            </div>
+            <div class="form-group d-flex col-12">
+                <fieldset class="container">
+                    <legend class="small muted col-12">Map Details</legend>
+                    <div class="d-flex flex-column flex-md-row justify-content-between col-4 flex-wrap">
+                        <div class="form-check col-3">
+                            <input type="checkbox" name="isSmallNew" id="isSmallNew" class="form-check-input small">
+                            <label for="isSmallNew" class="form-check-label small" type>Small</label>
+                        </div>
+                        <div class="form-check col-3">
+                            <input type="checkbox" name="isFaceoffNew" id="isFaceoffNew" class="form-check-input small">
+                            <label for="isFaceoffNew" class="form-check-label small" type>Faceoff</label>
+                        </div>
+                        <div class="form-check col-3">
+                            <input type="checkbox" name="isSpecialtyNew" id="isSpecialtyNew" class="form-check-input small">
+                            <label for="isSpecialtyNew" class="form-check-label small" type>Specialty</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <!-- checkboxes: is small, is face off, is specialty  -->
+    </div>
+
+    <div id="adminMapEditForm" class="bg-light container-md">
+        <h2 class="ps-2 mb-4 border-bottom pt-4">Edit Map</h2>
+        <div class="row mb-3 mapEditContainer ps-4">
+            <div class="form-group d-flex col-12 gap-2 ps-3">
+                <label for="mapNameUpdate" class="col-auto">Map Name:</label>
+                <input type="text" value="" name="mapNameUpdate" id="mapNameUpdate" class="small col-4" disabled />
+                <i class="bi bi-pencil-square editIcon btn border-secondary col-auto offset-1"></i>
+                <div class="editIconsContainer d-none col-6">
+                    <i class="bi bi-floppy saveIcon px-3  text-success btn border-secondary col-auto offset-1"></i>
+                    <i class="bi bi-trash3 px-3 deleteIcon text-danger btn border-secondary col-auto offset-1"></i>
+                    <i class="bi bi-x-circle cancelIcon px-3 text-warning btn border-secondary col-auto offset-1"></i>
+                </div>
+            </div>
+            <div class="form-group d-flex col-12">
+                <fieldset class="container">
+                    <legend class="small muted col-12">Map Details</legend>
+                    <div class="d-flex flex-row justify-content-between flex-wrap col-4">
+                        <div class="form-check col-3">
+                            <input type="checkbox" name="isSmallUpdate" id="isSmallUpdate" class="form-check-input small" disabled>
+                            <label for="isSmallUpdate" class="form-check-label small">Small</label>
+                        </div>
+                        <div class="form-check col-3">
+                            <input type="checkbox" name="isFaceoffUpdate" id="isFaceoffUpdate" class="form-check-input small" disabled>
+                            <label for="isFaceoffUpdate" class="form-check-label small">Faceoff</label>
+                        </div>
+                        <div class="form-check col-3">
+                            <input type="checkbox" name="isSpecialtyUpdate" id="isSpecialtyUpdate" class="form-check-input small" disabled>
+                            <label for="isSpecialtyUpdate" class="form-check-label small">Specialty</label>
+                        </div>
+                        <input type="hidden" name="mapId" id="mapId" value="0">
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <p id="actionSuccess" class="text-success">
+            @if (Model.SuccessMessage != "")
+            {
+                @Model.SuccessMessage
+            }
+        </p>
+
+        <p id="actionFail" class="text-danger">
+            @if (Model.ErrorMessage != "")
+            {
+                @Model.ErrorMessage
+            }
+        </p>
+    </div>
+    <h2 class="ps-2 text-muted">Maps</h2>
+    <div class="vh-50 container-sm" style="overflow: scroll;">
+        <table class="table small text-light">
+            <thead>
+                <tr>
+                    <th class="px-2"></th>
+                    <th class="px-2">Map Name</th>
+                    <th class="px-2">Small Map</th>
+                    <th class="px-2">Faceoff Map</th>
+                    <th class="px-2">Limited Time Map</th>
+                    <th class="px-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var map in @Model.AllMaps)
+                {
+                <tr>
+                    <td class="px-2">@map.MapId</td>
+                    <td class="px-2">@map.MapName</td>
+                    <td class="px-2">@(map.IsSmall ? "yes" : "no")</td>
+                    <td class="px-2">@(map.IsFaceoff ? "yes" : "no")</td>
+                    <td class="px-2">@(map.IsSpecialty ? "yes" : "no")</td>
+                    <td><button type="button" class="btn btn-outline-info">edit</button></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <script src="~/js/adminMaps.js"></script>
+</div>

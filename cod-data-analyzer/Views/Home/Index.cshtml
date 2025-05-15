@@ -1,0 +1,157 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+ol > li {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+</style>
+
+<div id="main" class="container-md">
+    <div class="row">
+        <div id="SiteOverview" class="m-3 border-bottom border-top pt-4">
+            <h2>Multiplayer Data Analyzer Overview</h2>
+            <div class="px-4">
+                <p>
+                    This website was created with the purpose of calculating stats and visualizing multiplayer data for the game <span class="fw-bold">Call of Duty - Black Ops 6</span>, published by Activision Publishing. All you need is your multiplayer match data—everything else is handled by the analyzer!
+                </p>
+                <p>
+                    Gain useful insights not provided by the data request, such as calculated ratios and performance-based statistics. All that’s required is a file to upload or simply copy the data from.
+                </p>
+            </div>
+        </div>
+
+        <div id="WhyUse" class="m-3 border-bottom">
+            <h2>Why Use the Analyzer?</h2>
+            <div class="px-4">
+                <p class="mb-1">
+                    Ability to filter your data based on multiple factors:
+                </p>
+                <ul>
+                    <li>Filter out game modes</li>
+                    <li>Filter out maps</li>
+                    <li>Filter out matches quit early</li>
+                    <li>Filter out specific matches (using match ID from request)</li>
+                </ul>
+
+                <p>
+                    Visualize your data using graphs and charts.
+                </p>
+
+                <p>
+                    View matches within certain timeframes to gain a better understanding of your performance during different points in your gaming journey.
+                </p>
+            </div>
+        </div>
+
+        <div id="HowToRequest" class="m-3 border-bottom">
+            <h2>How To Request Data</h2>
+            <div class="px-4">
+                <ol>
+                    <li>
+                        Log into the <a href="https://support.activision.com/privacy" target="_blank">Activision privacy portal</a> with your account details associated with Black Ops 6.
+                    </li>
+                    <li>Click “Submit a New Request”.</li>
+                    <li>
+                        Enter your country of residence from the dropdown provided. If you reside in the US, an additional dropdown will appear to select your state.
+                    </li>
+                    <li>Read through and accept the terms.</li>
+                    <li>Click “Proceed to Privacy and Data Protection Portal”.</li>
+                    <li>
+                        Under “Select a Request Type”, click “Access My Personal Information (Subject Access Request)”.
+                    </li>
+                    <li>
+                        Read through and accept the
+                        <a href="https://www.activision.com/legal/terms-of-use" target="_blank">Activision Terms of Use</a>.
+                    </li>
+                    <li>Select "Activision" and the platform you play on.</li>
+                    <li>Follow any login instructions to continue.</li>
+                    <li>
+                        Ensure all Call of Duty checkbox options for data inclusion are checked.
+                        If not, manually check “Call of Duty: Black Ops 6 (including Call of Duty Warzone)”.
+                    </li>
+                    <li>Click “Submit Request” to submit the request with Activision.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="DataPrivacy" class="m-3 border-bottom">
+            <h2>Data and Privacy</h2>
+
+            <div class="px-4 my-3">
+                <h3>How Do I Upload Data?</h3>
+                <div class="px-2">
+                    <p>Multiple ways to upload your match data are allowed:</p>
+                    <ul>
+                        <li>HTML file containing the multiplayer data HTML table directly from the data request report</li>
+                        <li>Data request HTML table converted to a CSV</li>
+                        <li>
+                            The raw text of either input option above (.csv or .html). This can be uploaded as a .txt file or input into a textbox
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="px-4 my-3">
+                <h3 id="Privacy">Privacy</h3>
+                <div class="px-2">
+                    <p>
+                        Privacy is extremely important, which is why I ask that if you are uploading the raw HTML file or text from the data report, you remove all HTML in the file except for the multiplayer data report table.
+                    </p>
+
+                    <p>
+                        I also offer a free, open-source tool to extract your HTML file into a valid .csv format for upload. This tool is written in Java as a downloadable application, so the data stays on your computer without requiring any web page. You can find the <a href="https://www.github.com" target="_blank">GitHub repository</a> for the tool on my GitHub page.
+                    </p>
+
+                    <p>
+                        Alternatively, I offer a second website where you can upload your full HTML file. It uses only JavaScript, so your data is fully processed by your computer. This is also hosted <a href="https://www.github.com" target="_blank">as a GitHub repository</a>, allowing you to run it yourself as well.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p id="click">click</p>
+</div>
+<script>
+        document.getElementById("click").addEventListener("click", async () => {
+        console.log("DOM loaded");
+            try {
+            const method = "POST";
+            model = {
+                AllMaps: [{}],
+                EditMap: {
+                    MapName: "test-post",
+                    IsSmall: false,
+                    IsFaceoff: false,
+                    IsSpecialty: false
+                }
+            }
+            const url = method === "POST" ? `/Admin/Maps` : `/Admin/Maps?id=${id}`;
+            const headers = new Headers({ "Content-Type": "application/json" });
+
+            const apiRequest = new Request(url, {
+                method,
+                headers,
+                body: JSON.stringify(model)
+            });
+
+            const response = await fetch(apiRequest);
+
+            if (!response.ok) throw new Error(`Response status: ${response.status}`);
+
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new TypeError("Invalid content type response");
+            }
+
+            return true;
+        } catch (e) {
+            console.error(e.message);
+            return false;
+        }
+
+        
+    });
+
+</script>

@@ -1,0 +1,303 @@
+﻿@model cod_data_analyzer.ViewModels.AnalyzerReportViewModel
+@{
+    ViewData["Title"] = "Analyzer Report";
+}
+<div class="container-md mt-5 d-flex flex-column min-vh-100 d-flex bg-light p-5 text-dark">
+    <h2>Analyzer Report</h2>
+    <div class="row stats my-5 border p-1 d-flex flex-md-row flex-sm-column flex-nowrap overflow-scroll flex-fill vh-50">
+        <div class="col-md-4 m-3 flex-grow-1">
+            <div class="border mt-2 text-center">
+                <h3>Stats</h3>
+            </div>
+            <div class="d-flex flex-row flex-nowrap justify-content-between align-items-stretch gap-3">
+                <div class="border p-2 flex-grow-1 calculatedStatContainer">
+                    <p>Games Analyzed: <span id="gamesAnalyzedOut">@Model.MatchCount</span></p>
+                    <p>Total Kills: <span id="totalKillsOut">@Model.ReportTotals.TotalKills</span></p>
+                    <p>Total Eliminations: <span id="totalEliminationsOut">@Model.ReportTotals.TotalEliminations</span></p>
+                    <p>Total Assist: <span id="totalAssistOut">@Model.ReportTotals.TotalAssists</span></p>
+                    <p>Total Deaths: <span id="totalDeathsOut">@Model.ReportTotals.TotalDeaths</span></p>
+                    <p>Total Hits: <span id="totalHitsOut">@Model.ReportTotals.TotalHits</span></p>
+                    <p>Total Misses: <span id="totalMissesOut">@Model.ReportTotals.TotalMisses</span></p>
+                    <p>Total Wins: <span id="totalWinsOut">@Model.ReportTotals.TotalWins</span></p>
+                    <p>Total Losses: <span id="totalLossesOut">@Model.ReportTotals.TotalLosses</span></p>
+                    @* kills/assist  *@
+                </div>
+                <div class="border p-2 flex-grow-1 calculatedStatContainer">
+                    <p>E/D Ratio: <span id="edRatioOut">@Model.ReportAverages.EdRatio.ToString("0.00")</span></p>
+                    <p>K/D Ratio: <span id="kdRatioOut">@Model.ReportAverages.KdRatio.ToString("0.00")</span></p>
+                    <p>Win/Loss Ratio: <span id="winLossRatioOut">@Model.ReportAverages.WinLossRatio.ToString("0.00")</span></p>
+                    <p>Assist/Kill Ratio:  <span id="killAssitRatioOut">@Model.ReportAverages.KillAssistRatio.ToString("0.00")</span></p>
+                </div>
+                <div class="border p-2 mb-2 flex-grow-1 calculatedStatContainer">
+                    <p>Kill Average: <span id="killAverageOut">@Model.ReportAverages.KillAverage.ToString("0.00")</span></p>
+                    <p>Elimination Average: <span id="eliminationAverageOut">@Model.ReportAverages.EliminationAverage.ToString("0.00")</span></p>
+                    <p>Headshot Average: <span id="headshotAverageOut">@Model.ReportAverages.HeadshotAverage.ToString("0.00")</span></p>
+                    <p>Assist Average: <span id="assistAverageOut">@Model.ReportAverages.AssistAverage.ToString("0.00")</span></p>
+                    <p>Death Average: <span id="deathAverageOut">@Model.ReportAverages.DeathAverage.ToString("0.00")</span></p>
+                    @* <p>Average Damage Dealt: <span id="avgDamageDealtOut">@Model.AverageDamageDealt.ToString("0.00")</span></p> *@
+                    @* <p>Average Damage Taken: <span id="avgDamageTakenOut">@Model.AverageDamageTaken.ToString("0.00")</span></p> *@
+                    <p>Average SR: <span id="avgSROut">@Model.ReportAverages.AverageSr.ToString("0.00")</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row stats my-5 border p-1 d-flex flex-md-row flex-sm-column flex-nowrap overflow-x-scroll flex-fill">
+        <div class="col-md-4 card m-3   flex-grow-1">
+            <div class="card-header mt-2 border text-center">
+                <h3>Settings</h3>
+            </div>
+            <div class="card-body calculatedStatContainer d-flex flex-row flex-wrap">
+                <dl class="col-md-4 col-6">
+                    <dt>Match Quit Threshold:</dt>
+                    <dd>
+                        @if(!Model.IsSettingEnabled.Find(se => se.Key=="MatchQuitThreshold").Value)
+                        {
+                            <span class="text-muted">disabled</span>
+                        }
+                        else
+                        {
+                            @Model.AnalyzerSettings.MatchQuitThreshold
+                        }
+                    </dd>
+                </dl>
+                <dl class="col-md-4 col-6">
+                    <dt>Minimum Score Required:</dt>
+                    <dd>
+                        @if (!Model.IsSettingEnabled.Find(se => se.Key == "MinScore").Value)
+                        {
+                            <span class="text-muted">disabled</span>
+                        }
+                        else
+                        {
+                            @Model.AnalyzerSettings.MinScore
+                        }
+                    </dd>
+                </dl>
+                <dl class="col-md-4 col-6">
+                    <dt>Minimum Skill Required:</dt>
+                    <dd>
+                        @if (!Model.IsSettingEnabled.Find(se => se.Key == "MinSkill").Value)
+                        {
+                            <span class="text-muted">disabled</span>
+                        }
+                        else
+                        {
+                            @Model.AnalyzerSettings.MinSkill
+                        }
+                    </dd>
+                </dl>
+                <dl class="col-md-4 col-6">
+                    <dt>Start Date:</dt>
+                    <dd>
+                    @if (!Model.IsSettingEnabled.Find(se => se.Key == "DateRange").Value)
+                    {
+                        <span class="text-muted">disabled</span>
+                    }
+                    else
+                    {
+                        @Model.AnalyzerSettings.StartDate
+                    }
+                    </dd>
+                </dl>
+                <dl class="col-md-4 col-6">
+                    <dt>End Date:</dt>
+                    <dd>
+                    @if (!Model.IsSettingEnabled.Find(se => se.Key == "DateRange").Value)
+                    {
+                        <span class="text-muted">disabled</span>
+                    }
+                    else
+                    {
+                        @Model.AnalyzerSettings.EndDate
+                    }
+                    </dd>
+                </dl>
+                <dl class="col-md-4 col-6">
+                    <dt>Sr Graph Frequency:</dt>
+                    <dd>@Model.AnalyzerSettings.SrGraphFrequency</dd>
+                </dl>
+                @if (@Model.AnalyzerSettings.SelectedGameModes.Count > 0)
+                {
+                    <div class="col-12">
+                        <p>Included Game Modes:</p>
+                        <ul id="settingsExludedGameOut" class="d-flex flex-column flex-grow-0 overflow-y-scroll border vh-25">
+                            @foreach (var mode in Model.AnalyzerSettings.SelectedGameModes)
+                            {
+                                <li class="list-unstyled">@mode.GameTitle.GameTitleName</li>
+                            }
+                        </ul>
+                    </div>
+                }
+                @if (@Model.AnalyzerSettings.SelectedMaps.Count > 0)
+                {
+                    <div class="col-12">
+                        <p>Included Maps:</p>
+                        <ul id="settingsExcludedMapOut" class="d-flex flex-column flex-grow-0 overflow-y-scroll border vh-25">
+                            @foreach (var map in Model.AnalyzerSettings.SelectedMaps)
+                            {
+                                <li class="list-unstyled">@map.MapName</li>
+                            }
+                        </ul>
+                    </div>
+                }
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="row stats my-5 border p-1 d-flex flex-md-row flex-sm-column flex-nowrap overflow-x-scroll flex-fill d-print-none">
+        <div class="d-flex overflow-scroll my-5 vh-75">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="sticky-top bg-light">
+                        <th>MatchStart</th>
+                        <th>MatchEnd</th>
+                        <th>Match Length</th>
+                        <th>Match Win</th>
+                        <th>Gamemode</th>
+                        <th>Map</th>
+                        <th>Lifetime Wins</th>
+                        <th>Lifetime Losses</th>
+                        <th>Lifetime Kills</th>
+                        <th>Lifetime Deaths</th>
+                        <th>Lifetime Hits</th>
+                        <th>Lifetime Misses</th>
+                        <th>Skill</th>
+                        <th>Score</th>
+                        <th>Shots</th>
+                        <th>Hits</th>
+                        <th>Assists</th>
+                        <th>Longest Streak</th>
+                        <th>Kills</th>
+                        <th>Deaths</th>
+                        <th>Headshots</th>
+                        <th>Executions</th>
+                        <th>Suicides</th>
+                        <th>DamageDone</th>
+                        <th>Percent Time Moving</th>
+                        <th>Total Xp</th>
+                        <th>Score Xp</th>
+                        <th>Challenge Xp</th>
+                        <th>Match Xp</th>
+                        <th>Misc Xp</th>
+                        <th>Accolade Xp</th>
+                        <th>Weapon Xp</th>
+                        <th>Operator Xp</th>
+                        <th>Battlepass Xp</th>
+                        <th>Rank at Start</th>
+                        <th>Rankat End</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var match in Model.Matches)
+                    {
+                        <tr>
+                            <td class="matchStart">@match.MatchStart</td>
+                            <td>@match.MatchEnd</td>
+                            <td>@match.MatchLength</td>
+                            <td>@match.MatchWin</td>
+                            <td>@match.GameMode.GameTitle.GameTitleName</td>
+                            <td>@match.Map.MapName</td>
+                            <td>@match.LifetimeStats.LifetimeWins</td>
+                            <td>@match.LifetimeStats.LifetimeLosses</td>
+                            <td>@match.LifetimeStats.LifetimeKills</td>
+                            <td>@match.LifetimeStats.LifetimeDeaths</td>
+                            <td>@match.LifetimeStats.LifetimeHits</td>
+                            <td>@match.LifetimeStats.LifetimeMisses</td>
+                            <td class="matchSkill">@match.PlayerStats.Skill</td>
+                            <td class="matchScore">@match.PlayerStats.Score</td>
+                            <td>@match.PlayerStats.Shots</td>
+                            <td>@match.PlayerStats.Hits</td>
+                            <td>@match.PlayerStats.Assists</td>
+                            <td>@match.PlayerStats.LongestStreak</td>
+                            <td class="matchKills">@match.PlayerStats.Kills</td>
+                            <td>@match.PlayerStats.Deaths</td>
+                            <td>@match.PlayerStats.Headshots</td>
+                            <td>@match.PlayerStats.Executions</td>
+                            <td>@match.PlayerStats.Suicides</td>
+                            <td>@match.PlayerStats.DamageDone</td>
+                            <td>@match.PlayerStats.PercentTimeMoving</td>
+                            <td>@match.XpStats.TotalXp</td>
+                            <td>@match.XpStats.ScoreXp</td>
+                            <td>@match.XpStats.ChallengeXp</td>
+                            <td>@match.XpStats.MatchXp</td>
+                            <td>@match.XpStats.MiscXp</td>
+                            <td>@match.XpStats.AccoladeXp</td>
+                            <td>@match.XpStats.WeaponXp</td>
+                            <td>@match.XpStats.OperatorXp</td>
+                            <td>@match.XpStats.BattlepassXp</td>
+                            <td>@match.XpStats.RankStart</td>
+                            <td>@match.XpStats.RankEnd</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2>Charts</h2>
+
+    <h3>Ratios</h3>
+    <div class="row overflow-x-scroll d-flex flex-row flex-nowrap text-center my-5 border p-3">
+
+        <div class="col-md-4 chart-container mx-5 my-3">
+            <!-- <img src="image.png" /> -->
+            <div class="card-header">
+                <h3>E/D</h3>
+            </div>
+            <div class="card-img-top">
+                <!-- <img src="image.png" /> -->
+                <canvas id="edChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-4 chart-container mx-5 my-3">
+            <div class="card-header">
+                <h3>K/D</h3>
+            </div>
+            <div class="card-img-top">
+                <!-- <img src="image.png" /> -->
+                <canvas id="kdChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-4 chart-container mx-5 my-3">
+            <!-- <img src="image.png" /> -->
+            <div class="card-header">
+                <h3>A/K</h3>
+            </div>
+            <div class="card-img-top">
+                <!-- <img src="image.png" /> -->
+                <canvas id="akChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="col-md-4 chart-container mx-5 my-3">
+            <!-- <img src="image.png" /> -->
+            <div class="card-header">
+                <h3>W/L</h3>
+            </div>
+            <div class="card-img-top">
+                <!-- <img src="image.png" /> -->
+                <canvas id="wlChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+    <h3>Skill Graph</h3>
+    <div class="row overflow-x-scroll d-flex flex-row flex-nowrap text-center my-5 border p-3" style="">
+        <div class="container-fluid">
+            <!-- <img src="skill.png" alt="test"> -->
+            <canvas id="skillChart" class=""></canvas>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+
+<script src="~/js/report.js"></script>

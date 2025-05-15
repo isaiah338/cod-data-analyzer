@@ -1,0 +1,356 @@
+﻿
+@using cod_data_analyzer.Services.Util
+@model cod_data_analyzer.ViewModels.AnalyzerDataViewModel 
+<style>
+    .overflow-x-scroll {
+    overflow-x: scroll;
+    }
+
+    .form-group {
+    margin: 1rem 0.5rem
+    }
+
+    .form-group > label {
+    margin-bottom: 0.5rem;
+    }
+
+    .form-check {
+    padding-bottom: 0.5rem;
+    }
+
+    table > tbody > tr:nth-child(even) {
+    background-color: #f2f2f2; /* light gray, or choose any color you want */
+    }
+
+    table > tbody > tr:nth-child(odd) {
+    background-color: #dadada; /* light gray, or choose any color you want */
+    }
+
+    .data-table-container {
+    max-height: 50vh;
+    }
+
+    table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; /* light bg to match .bg-light */
+    z-index: 1;
+    border-bottom: 3px black solid;
+    }
+</style>
+<div class="container-md text-light min-vh-100">
+    <div class="my-5">
+        <h2>Multiplayer Data View</h2>
+
+
+        <div class="data-table-container row overflow-x-scroll" id="dataTableContainer">
+            <h3>All Matches</h3>
+            <table class="bg-light m-4 text-dark">
+                <thead>
+                    <tr class="border">
+                        <th class="px-4">Timestamp</th>
+                        <th class="px-4">Game Mode</th>
+                        <th class="px-4">Match ID</th>
+                        <th class="px-4">Match Start</th>
+                        <th class="px-4">Match End</th>
+                        <th class="px-4">Map</th>
+                        <th class="px-4">Match Outcome</th>
+                        <th class="px-4">Skill</th>
+                        <th class="px-4">Score</th>
+                        <th class="px-4">Hits</th>
+                        <th class="px-4">Kills</th>
+                        <th class="px-4">Deaths</th>
+                        <th class="px-4">Assists</th>
+                        <th class="px-4">Headshots</th>
+                        <th class="px-4">Suicides</th>
+                        <th class="px-4">Damage Dealt</th>
+                        <th class="px-4">% Time Moving</th>
+                    </tr>
+                </thead>
+                <tbody id="matchTableDataOut">
+                    @if(Model.Matches.Count > 0)
+                    {
+                        @foreach(var match in Model.Matches)
+                        {
+
+                            var maps = Model.Maps;
+                            List<GameMode> gameModes = [];
+                            gameModes.AddRange(Model.CoreGameModes);
+                            gameModes.AddRange(Model.PartyGameModes);
+
+                            <tr>
+                                <td class="px-4">
+                                    @match.MatchStart
+                                </td>
+                                <td class="px-4">
+                                    @(gameModes.Find(gm => gm.GameModeId == match.GameModeId)?.GameTitle?.GameTitleName ?? "unknown")
+                                </td>
+                                <td class="px-4">
+                                    @match.MatchId
+                                </td>
+                                <td class="px-4">
+                                    @match.MatchStart
+                                </td>
+                                <td class="px-4">
+                                    @match.MatchEnd
+                                </td>
+                                <td class="px-4">
+                                    @(maps.Find(m => m.MapId == match.MapId)?.MapName ?? "unknown")
+                                </td>
+                                <td class="px-4">
+                                    @(match.MatchWin ? "win" : "loss")
+                                </td>
+                                <td class="px-4">
+                                    @match.PlayerStats.Skill
+                                </td>
+                                <td class="px-4">
+                                    @match.PlayerStats.Score
+                                </td>
+                                <td class="px-4">
+                                    @match.PlayerStats.Hits
+                                </td>
+                                <td class="px-4">
+                                    @match.PlayerStats.Kills
+                                </td>
+                                <td class="px-4">
+                                    @match.PlayerStats.Deaths
+                                </td>
+                                <td class="px-4">
+                                    @match.PlayerStats.Assists
+                                </td>
+                                <td class="px-4">
+                                    @match.PlayerStats.Headshots
+                                </td>
+                                <td class="px-4">
+                                    @match.PlayerStats.Suicides
+                                </td>
+                                <td class="px-4">
+                                    @match.PlayerStats.DamageDone
+                                </td>
+                                <td class="px-4">
+                                    @match.PlayerStats.PercentTimeMoving
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="18" class="text-center">No matches.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="my-5">
+        <h2>Analyzer Settings</h2>
+        @* asp-action="Report" asp-controller="Analyzer"  *@
+        <form method="post" asp-action="Report" asp-controller="Analyzer">
+                @if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <div class="row px-5 m-4" id="actionButtonContainer">
+                        <div class="col d-flex justify-content-end">
+                            <button asp-action="Update" class="btn btn-outline-primary btn-large border">Save Data</button>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <button asp-action="ResetData" class="btn btn-outline-primary btn-large border">Reset Data</button>
+                        </div>
+                        
+                    </div>
+                }
+            <div class="col d-flex justify-content-start">
+                <button asp-action="Report" type="submit" class="btn btn-outline-primary btn-large border">View Report</button>
+            </div>
+                <fieldset>
+                    <legend class="px-2">Basic Settings</legend>
+                    <div class="row row-col-3" id="settingsIntInput">
+                        <div class="my-4 bg-light rounded col-4 offset-1">>
+                            <label for="srGraphFrequency" class="text-dark px-1">SR Graph Match Frequency:</label>
+                            <input class="form-control" asp-for="Settings.SrGraphFrequency" />
+                        </div>
+
+                        <div class="my-4 bg-light rounded col-4 offset-1">
+                            <input type="checkbox" checked data-toggle="toggle" asp-for="MinTimePlayedTopMapEnabled">
+                            <label for="minPlayMap" class="text-dark px-1 col-12">Min Times Played Top Maps:</label>
+                            <input class="form-control" asp-for="Settings.MinTimePlayedTopMap" />
+                        </div>
+
+                        <div class="my-4 bg-light rounded col-4 offset-1">
+                            <input type="checkbox" checked data-toggle="toggle" asp-for="MinTimePlayedTopGameEnabled">
+                            <label for="minPlayGame" class="text-dark px-1 col-12">Min Times Played Top Game Modes:</label>
+                            <input class="form-control" asp-for="Settings.MinTimePlayedTopGame" />
+                        </div>
+
+                        <div class="my-4 bg-light rounded  col-4 offset-1">
+                            <input type="checkbox" checked data-toggle="toggle" asp-for="MinScoreEnabled">
+                            <label for="minScore" class="text-dark px-1 col-12">Min Score:</label>
+                            <input class="form-control" asp-for="Settings.MinScore" />
+                        </div>
+                        <div class="bg-light rounded col-4 offset-1">
+                            <input type="checkbox" checked data-toggle="toggle" asp-for="DateRangeEnabled">
+                            <div class="form-group bg-light">
+
+                                <label for="startDate" class="text-dark px-1 col-12">Range Start Date:</label>
+                                <input class="form-control" asp-for="Settings.StartDate" value="2024-10-01T00:00:00.000" />
+                            </div>
+
+                            <div class="form-group bg-light rounded">
+
+                                <label for="endDate" class="text-dark px-1 col-12">Range End Date:</label>
+                                <input class="form-control" asp-for="Settings.EndDate" value="@DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm")" />
+                            </div>
+                        </div>
+
+                        <div class="my-4 bg-light col-4 offset-1">
+                            <input type="checkbox" checked data-toggle="toggle" asp-for="MatchQuitThresholdEnabled">
+                            <label for="quitThreshold" class="text-dark px-1 col-12">Seconds Played Threshold:</label>
+                            <input class="form-control" asp-for="Settings.MatchQuitThreshold" />
+                        </div>
+
+                        <div class="my-4 bg-light rounded col-4 offset-1">
+                            <input type="checkbox" checked data-toggle="toggle" asp-for="MinSkillEnabled">
+                            <label for="srThreshold" class="text-dark px-1 col-12">Minimum Skill:</label>
+                            <input class="form-control" asp-for="Settings.MinSkill" />
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend class="px-2">Map Selection</legend>
+
+                    <div id="mapBaseContainer" class="px-5">
+                        <p class="fw-bold mt-5">Base Maps</p>
+                        <div class="row form-group px-2" id="settingsBaseMapContainer">
+                            <div class="row d-flex flex-row flex-wrap">
+                                @if(Model.Maps.Count > 0)
+                                {
+                                    @foreach(var map in Model.Maps)
+                                    {
+                                        <div class="form-check col-3">
+                                            @{
+                                                var maps = Model.Maps;
+                                                var mapName = maps.Find(m => m.MapId == map.MapId).MapName;
+                                            }
+                                            <input 
+                                            type="checkbox" 
+                                            class="form-check-input baseMapCheck" 
+                                            id="map_@mapName.ToLower()"
+                                            name="maps[]"
+                                            checked="@true"
+                                            value="@map.MapId">
+
+                                            <label 
+                                            class="form-check-label px-3"
+                                            for="map_@mapName">@mapName</label>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="col-3 d-flex flex-column align-items-start justify-content-start">No Maps</div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend class="px-2">Game Mode Selection</legend>
+                    <div id="modeCoreContainer" class="px-5">
+                        <p class="fw-bold mt-5">Core</p>
+                        <div class="row" id="settingsRowContainer">
+                            <div class="row d-flex flex-row flex-wrap">
+                                @if (Model.CoreGameModes.Count > 0)
+                                {
+                                    @foreach (var coreMode in Model.CoreGameModes)
+                                    {
+                                        var gameModeName = coreMode.GameTitle.GameTitleName;
+                                        <div class="form-check col-3">
+
+                                            <input 
+                                            type="checkbox"
+                                            class="form-check-input coreModeCheck"
+                                            id="c_mode_@gameModeName.ToLower()"
+                                            name="coreModes[]"
+                                            value="@coreMode.GameModeId"
+                                            checked>
+
+                                            <label 
+                                            class="form-check-label px-3"
+                                            for="c_mode_@gameModeName.ToLower()">@gameModeName</label>
+
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="col-3 d-flex flex-column align-items-start justify-content-start">No Core Game Modes</div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="modePartyContainer" class="px-5">
+                        <p class="fw-bold mt-5">Party Modes</p>
+
+                        <div class="row d-flex flex-row flex-wrap">
+                            @if (Model.PartyGameModes.Count > 0)
+                            {
+                                @foreach (var partyMode in Model.PartyGameModes)
+                                {
+                                    var gameModeName = partyMode.GameTitle.GameTitleName;
+                                    <div class="form-check col-3">
+
+                                        <input type="checkbox"
+                                        class="form-check-input partyModeCheck"
+                                        id="p_mode_@gameModeName.ToLower()"
+                                        name="partyModes[]"
+                                        value="@partyMode.GameModeId">
+
+                                        <label class="form-check-label px-3"
+                                        for="p_mode_@gameModeName.ToLower()">@gameModeName</label>
+
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-3 d-flex flex-column align-items-start justify-content-start">No Party Game Modes</div>
+                            }
+                        </div>
+                    </div>
+
+                </fieldset>
+                @* plain text json string causing issues, encoding for lower size *@
+                @{
+                    Model.Matches.ForEach(m => {
+                        if (m.PlayerStats != null)
+                            m.PlayerStats.Match = null;
+
+                        if (m.LifetimeStats != null)
+                            m.LifetimeStats.Match = null;
+
+                        if (m.XpStats != null)
+                            m.XpStats.Match = null;
+
+                        if (m.GameMode != null && m.GameMode.GameType != null)
+                            m.GameMode.GameType.GameModes = null;
+
+                        if (m.GameMode != null && m.GameMode.GameTitle != null)
+                            m.GameMode.GameTitle.GameModes = null;
+
+                    });
+                }
+                <input type="hidden" value="@(StringUtil.SerializedEncodedJson(Model.Matches))" id="matchesEncoded" name="matchesEncoded" />
+            
+            </form>
+        </div>
+            
+    </div>
+
+
+<script type="text/javascript" src="/js/data.js"></script>

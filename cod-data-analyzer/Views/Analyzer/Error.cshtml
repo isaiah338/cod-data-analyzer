@@ -1,0 +1,47 @@
+﻿@model cod_data_analyzer.ViewModels.ErrorViewModel
+
+<div class="container mt-5 text-dark">
+    <div class="alert p-4 rounded shadow bg-light">
+        <h2 class="text-danger">An Error Occured Processing Request</h2>
+        <p>Details:</p>
+
+        @if (Model.Errors != null && Model.Errors.Any())
+        {
+            <dl>
+                @foreach (var error in Model.Errors)
+                {
+                    var severity = "info";
+                    switch(error.Severity)
+                    {
+                        case 1: 
+                            {
+                                severity = "warning";
+                                break;
+                            }
+                        case 2:
+                            {
+                                severity = "danger";
+                                break;
+                            }
+                    }
+                    <dt class="ps-2 text-@severity">@error.Header</dt>
+                    @if(error.Detail != null && error.Detail.Trim() != "")
+                    {
+                        <dd class="ps-4 text-info">@error.Detail</dd>
+                    }
+                } 
+                
+            </dl>
+        }
+        else
+        {
+            <p>No specific error messages were found.</p>
+        }
+        @{
+            var returnAction = Model.ReturnAction;
+            var returnController = Model.ReturnController;
+            var returnUrl = Url.Action(returnAction, returnController);
+        }
+        <a class="btn btn-primary mt-3" href="@returnUrl">Go Back</a>
+    </div>
+</div>

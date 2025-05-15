@@ -1,0 +1,31 @@
+﻿-- Base Maps
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Babylon', 0, 1, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Derelict', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Lowtown', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Payback', 0, 1, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Protocol', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Red Card', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Rewind', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Scud', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Skyline', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Subsonic', 0, 1, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Vault', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Vorkuta', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Nuketown', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Hideout', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Extraction', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Hacienda', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Bounty', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Dealership', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Grind', 0, 0, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Grind Ooze', 0, 0, 1);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Nuketown Holiday', 0, 0, 1); 
+-- Faceoff Maps
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Gala', 1, 1, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Pit', 1, 1, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Stakeout', 1, 1, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Warhead', 1, 1, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Heirloom', 1, 1, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Racket', 1, 1, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Lifeline', 1, 1, 0);
+INSERT INTO Map (MapName, IsFaceoff, IsSmall, IsSpecialty) VALUES ('Bullet', 1, 1, 0);
